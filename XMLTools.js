@@ -1,0 +1,59 @@
+/*globals exports*/
+
+// In the style of http://www.thomasfrank.se/xml_to_json.html but for Appcelerator with extras. 
+
+var doc, obj;
+exports.XMLTools = function(xml_string) {
+	doc = Ti.XML.parseString(xml_string).documentElement;
+};
+
+exports.XMLTools.prototype.getDocument = function() {
+	return doc;
+};
+var addToObject = function(obj, key, value) {
+	if(obj[key] == null) {
+		obj[key] = value;
+	} else if(!(obj[key] instanceof Array)) {
+		var tmp = obj[key];
+		var arr = [tmp, value];
+		obj[key] = arr;
+	} else {
+		obj[key].push(value);
+	}
+	return obj;
+};
+var traverseTree = function(node) {
+	var textOnly = true;
+	var part = {};
+	if(node.hasChildNodes()) {
+		for(var ch_index = 0; ch_index < node.childNodes.length; ch_index++) {
+			var ch = node.childNodes.item(ch_index);
+			if(ch.nodeType == 3) {//Text Node
+				return ch.text;
+			} else {
+				part = addToObject(part, ch.tagName, traverseTree(ch));
+			}
+		}
+		textOnly = false;
+	}
+	if(node.hasAttributes()) {
+		for(var att_index = 0; att_index < node.attributes.length; att_index++) {
+			var att = node.attributes.item(att_index);
+			//part = addToObject(part, att.nodeName, att.nodeValue);
+			part[att.nodeName] = att.nodeValue;
+		}
+		textOnly = false;
+	}
+	return part;
+};
+exports.XMLTools.prototype.toObject = function() {
+	obj = traverseTree(doc);
+	return obj;
+};
+
+exports.XMLTools.prototype.toJSON = function() {
+	if(obj == null) {
+		obj = traverseTree(doc);
+	}
+	return (JSON.stringify(obj));
+};

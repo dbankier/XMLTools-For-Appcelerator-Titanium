@@ -28,6 +28,7 @@ var traverseTree = function(node) {
 	if(node.hasChildNodes()) {
 		for(var ch_index = 0; ch_index < node.childNodes.length; ch_index++) {
 			var ch = node.childNodes.item(ch_index);
+			if(ch.nodeName=='#text' && ch.text.replace(/\n/g,'').replace(/ /g,'') == "") continue;//skip blank text element
 			if(ch.nodeType == 3) {//Text Node
 				return ch.text;
 			} else {

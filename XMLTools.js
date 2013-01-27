@@ -9,7 +9,7 @@ var XMLTools = function(inputXml) {
 		doc = inputXml.documentElement;
 	}
 	if(typeof inputXml == 'string'){
-		doc = Ti.XML.parseString(xml_string).documentElement;
+		doc = Ti.XML.parseString(inputXml).documentElement;
 	}		
 };
 

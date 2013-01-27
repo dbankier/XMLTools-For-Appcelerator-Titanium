@@ -1,6 +1,6 @@
 /*globals require*/
 
-var XMLTools = require("XMLTools").XMLTools;
+var XMLTools = require("XMLTools");
 var parser = new XMLTools('<animals><dog><name>Rufus</name><breed>labrador</breed></dog><dog><name>Marty</name><breed>whippet</breed></dog><cat name="Matilda"/></animals>');
 Ti.API.info(parser.toJSON());
 

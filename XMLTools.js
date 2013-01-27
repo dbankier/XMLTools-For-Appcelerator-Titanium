@@ -3,11 +3,17 @@
 // In the style of http://www.thomasfrank.se/xml_to_json.html but for Appcelerator with extras. 
 
 var doc, obj;
-exports.XMLTools = function(xml_string) {
-	doc = Ti.XML.parseString(xml_string).documentElement;
+
+var XMLTools = function(inputXml) {	
+	if(typeof inputXml == 'object'){
+		doc = inputXml.documentElement;
+	}
+	if(typeof inputXml == 'string'){
+		doc = Ti.XML.parseString(xml_string).documentElement;
+	}		
 };
 
-exports.XMLTools.prototype.getDocument = function() {
+XMLTools.prototype.getDocument = function() {
 	return doc;
 };
 var addToObject = function(obj, key, value) {
@@ -47,14 +53,16 @@ var traverseTree = function(node) {
 	}
 	return part;
 };
-exports.XMLTools.prototype.toObject = function() {
+XMLTools.prototype.toObject = function() {
 	obj = traverseTree(doc);
 	return obj;
 };
 
-exports.XMLTools.prototype.toJSON = function() {
+XMLTools.prototype.toJSON = function() {
 	if(obj == null) {
 		obj = traverseTree(doc);
 	}
 	return (JSON.stringify(obj));
 };
+
+module.exports = XMLTools;

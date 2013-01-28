@@ -5,11 +5,11 @@
 var doc = null, obj = null;
 
 var XMLTools = function(inputXml) {	
-	if(typeof inputXml == 'object'){
-		doc = inputXml.documentElement;
-	}
 	if(typeof inputXml == 'string'){
 		doc = Ti.XML.parseString(inputXml).documentElement;
+	}	
+	if(typeof inputXml == 'object'){
+		doc = inputXml.documentElement;
 	}		
 };
 

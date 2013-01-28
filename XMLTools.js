@@ -2,7 +2,7 @@
 
 // In the style of http://www.thomasfrank.se/xml_to_json.html but for Appcelerator with extras. 
 
-var doc, obj;
+var doc = null, obj = null;
 
 var XMLTools = function(inputXml) {	
 	if(typeof inputXml == 'object'){
@@ -34,9 +34,9 @@ var traverseTree = function(node) {
 	if(node.hasChildNodes()) {
 		for(var ch_index = 0; ch_index < node.childNodes.length; ch_index++) {
 			var ch = node.childNodes.item(ch_index);
-			if(ch.nodeName=='#text' && ch.text.replace(/\n/g,'').replace(/ /g,'') == "") continue;//skip blank text element
+			if(ch.nodeName=='#text' && ch.textContent.replace(/\n/g,'').replace(/ /g,'') == "") continue;//skip blank text element
 			if(ch.nodeType == 3) {//Text Node
-				return ch.text;
+				return ch.textContent;
 			} else {
 				part = addToObject(part, ch.tagName, traverseTree(ch));
 			}
@@ -54,11 +54,17 @@ var traverseTree = function(node) {
 	return part;
 };
 XMLTools.prototype.toObject = function() {
+	if(doc == null){
+	  	return null;
+	}
 	obj = traverseTree(doc);
 	return obj;
 };
 
 XMLTools.prototype.toJSON = function() {
+	if(doc == null){
+	  	return null;
+	}	
 	if(obj == null) {
 		obj = traverseTree(doc);
 	}

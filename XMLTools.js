@@ -1,15 +1,20 @@
-/*globals exports*/
+/**
+* XMLTools: Titanium module to convert XML to objects
+* Copyright: 2013 David Bankier (http://www.yydigital.com)
+* License: http://opensource.org/licenses/MIT
+* Source: https://github.com/dbankier/XMLTools-For-Appcelerator-Titanium
+*/
 
 // In the style of http://www.thomasfrank.se/xml_to_json.html but for Appcelerator with extras. 
 
-var doc, obj;
+var doc = null, obj = null;
 
 var XMLTools = function(inputXml) {	
-	if(typeof inputXml == 'object'){
-		doc = inputXml.documentElement;
-	}
 	if(typeof inputXml == 'string'){
 		doc = Ti.XML.parseString(inputXml).documentElement;
+	}	
+	if(typeof inputXml == 'object'){
+		doc = inputXml.documentElement;
 	}		
 };
 
@@ -34,9 +39,9 @@ var traverseTree = function(node) {
 	if(node.hasChildNodes()) {
 		for(var ch_index = 0; ch_index < node.childNodes.length; ch_index++) {
 			var ch = node.childNodes.item(ch_index);
-			if(ch.nodeName=='#text' && ch.text.replace(/\n/g,'').replace(/ /g,'') == "") continue;//skip blank text element
+			if(ch.nodeName=='#text' && ch.textContent.replace(/\n/g,'').replace(/ /g,'') == "") continue;//skip blank text element
 			if(ch.nodeType == 3) {//Text Node
-				return ch.text;
+				return ch.textContent;
 			} else {
 				part = addToObject(part, ch.tagName, traverseTree(ch));
 			}
@@ -54,11 +59,17 @@ var traverseTree = function(node) {
 	return part;
 };
 XMLTools.prototype.toObject = function() {
+	if(doc == null){
+	  	return null;
+	}
 	obj = traverseTree(doc);
 	return obj;
 };
 
 XMLTools.prototype.toJSON = function() {
+	if(doc == null){
+	  	return null;
+	}	
 	if(obj == null) {
 		obj = traverseTree(doc);
 	}

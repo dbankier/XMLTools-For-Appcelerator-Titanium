@@ -1,4 +1,9 @@
-/*globals exports*/
+/**
+* XMLTools: Titanium module to convert XML to objects
+* Copyright: 2013 David Bankier (http://www.yydigital.com)
+* License: http://opensource.org/licenses/MIT
+* Source: https://github.com/dbankier/XMLTools-For-Appcelerator-Titanium
+*/
 
 // In the style of http://www.thomasfrank.se/xml_to_json.html but for Appcelerator with extras. 
 

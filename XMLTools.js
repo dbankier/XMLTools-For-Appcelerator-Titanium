@@ -41,7 +41,11 @@ var traverseTree = function(node) {
 			var ch = node.childNodes.item(ch_index);
 			if(ch.nodeName=='#text' && ch.textContent.replace(/\n/g,'').replace(/ /g,'') == "") continue;//skip blank text element
 			if(ch.nodeType == 3) {//Text Node
-				return ch.textContent;
+        if (!node.hasAttributes()) {
+				  return ch.textContent;
+        } else {
+          part.text = ch.textContent;
+        }
 			} else {
 				part = addToObject(part, ch.tagName, traverseTree(ch));
 			}

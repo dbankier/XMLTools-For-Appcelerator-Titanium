@@ -40,8 +40,8 @@ var traverseTree = function(node) {
 		for(var ch_index = 0; ch_index < node.childNodes.length; ch_index++) {
 			var ch = node.childNodes.item(ch_index);
 			if(ch.nodeName=='#text' && ch.textContent.replace(/\n/g,'').replace(/ /g,'') == "") continue;//skip blank text element
-			if(ch.nodeType == 3) {//Text Node
-        if (!node.hasAttributes()) {
+			if(ch.nodeType === 3 || ch.nodeType === ch.CDATA_SECTION_NODE) {//Text Node
+        if (node.childNodes.length === 1 && !node.hasAttributes()) {
 				  return ch.textContent;
         } else {
           part.text = ch.textContent;

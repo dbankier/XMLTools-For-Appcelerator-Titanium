@@ -7,19 +7,18 @@
 
 // In the style of http://www.thomasfrank.se/xml_to_json.html but for Appcelerator with extras. 
 
-var doc = null, obj = null;
 
 var XMLTools = function(inputXml) {	
 	if(typeof inputXml == 'string'){
-		doc = Ti.XML.parseString(inputXml).documentElement;
+		this.doc = Ti.XML.parseString(inputXml).documentElement;
 	}	
 	if(typeof inputXml == 'object'){
-		doc = inputXml.documentElement;
+		this.doc = inputXml.documentElement;
 	}		
 };
 
 XMLTools.prototype.getDocument = function() {
-	return doc;
+	return this.doc;
 };
 var addToObject = function(obj, key, value) {
 	if(obj[key] == null) {
@@ -63,21 +62,21 @@ var traverseTree = function(node) {
 	return part;
 };
 XMLTools.prototype.toObject = function() {
-	if(doc == null){
+	if(this.doc == null){
 	  	return null;
 	}
-	obj = traverseTree(doc);
-	return obj;
+	this.obj = traverseTree(this.doc);
+	return this.obj;
 };
 
 XMLTools.prototype.toJSON = function() {
-	if(doc == null){
+	if(this.doc == null){
 	  	return null;
 	}	
-	if(obj == null) {
-		obj = traverseTree(doc);
+	if(this.obj == null) {
+		this.obj = traverseTree(this.doc);
 	}
-	return (JSON.stringify(obj));
+	return (JSON.stringify(this.obj));
 };
 
 module.exports = XMLTools;
